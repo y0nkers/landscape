@@ -85,23 +85,20 @@ namespace EngineSpace
 
     void Program::create()
     {
-        if (programId != 0)
-            throw std::runtime_error("Can't create exists program");
+        if (programId != 0) throw std::runtime_error("Cant create exists program");
         programId = glCreateProgram();
     }
 
     void Program::attachShader(const Shader& shader) const
     {
-        if (programId == 0)
-            throw std::runtime_error("Can't attach shader to empty program");
+        if (programId == 0) throw std::runtime_error("Cant attach shader to empty program");
         glAttachShader(programId, shader.getId());
         shader.clear();
     }
 
     void Program::link() const
     {
-        if (programId == 0)
-            throw std::runtime_error("Can't link empty program");
+        if (programId == 0) throw std::runtime_error("Cant link empty program");
         glLinkProgram(programId);
         int success;
         glGetProgramiv(programId, GL_LINK_STATUS, &success);

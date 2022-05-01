@@ -22,9 +22,9 @@ namespace EngineSpace
 
   void Engine::initDefaultOptionsGL() const
   {
-      if (Config::get().getSamples() > 0) glEnable(GL_MULTISAMPLE);
-      //glEnable(GL_DEPTH_TEST);
-      //glDepthFunc(GL_LESS);
+      if (Config::get().getSamples() > 0) glEnable(GL_MULTISAMPLE); // Мультисемплирование
+      glEnable(GL_DEPTH_TEST); // Тест глубины
+      glDepthFunc(GL_LESS); // khronos.org/registry/OpenGL-Refpages/gl4/html/glDepthFunc.xhtml
       glEnable(GL_CULL_FACE);
       glEnable(GL_BLEND);
       glEnable(GL_CLIP_DISTANCE0);

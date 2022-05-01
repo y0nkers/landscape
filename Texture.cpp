@@ -25,10 +25,7 @@ namespace EngineSpace
         *amount = 1;
     }
 
-    Texture::Texture(const Texture& tex)
-    {
-        swap(tex);
-    }
+    Texture::Texture(const Texture& tex) { swap(tex); }
 
     Texture& Texture::operator=(const Texture& tex)
     {
@@ -60,10 +57,7 @@ namespace EngineSpace
         id = 0;
     }
 
-    Texture::~Texture()
-    {
-        clear();
-    }
+    Texture::~Texture() { clear(); }
 
     void Texture::load(const std::string& path, GLenum type)
     {
@@ -79,17 +73,13 @@ namespace EngineSpace
 
     void Texture::create()
     {
-        if (isCreated())
-            throw std::runtime_error("Error: Cannot create existing Texture");
-
+        if (isCreated()) throw std::runtime_error("Error: Cannot create existing Texture");
         glGenTextures(1, &id);
     }
 
     void Texture::bind(GLenum type) const
     {
-        if (isNotCreated())
-            throw std::runtime_error("Error: Cannot bind not existing Texture");
-
+        if (isNotCreated()) throw std::runtime_error("Error: Cannot bind not existing Texture");
         glBindTexture(type, id);
     }
 };

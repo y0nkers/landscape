@@ -12,7 +12,7 @@ App::App(Window& win) :
     camera->rotate(50, -80);
 
     //fontRenderer.setColor(glm::vec3(1.0));
-    //skybox.getTexture().load({ "textures/cubemap/px.jpg", "textures/cubemap/nx.jpg", "textures/cubemap/py.jpg", "textures/cubemap/ny.jpg", "textures/cubemap/pz.jpg", "textures/cubemap/nz.jpg" });
+    skybox.getTexture().load({ "textures/skybox/right.jpg", "textures/skybox/left.jpg", "textures/skybox/top.jpg", "textures/skybox/bottom.jpg", "textures/skybox/front.jpg", "textures/skybox/back.jpg" });
 
     terrain.getGrassTexture().load("textures/grass.jpg", GL_TEXTURE_2D);
     terrain.getStoneTexture().load("textures/stone.jpg", GL_TEXTURE_2D);
@@ -25,7 +25,7 @@ App::App(Window& win) :
     //water.scale(glm::vec3(200.0f));
 
     scene = new Scene(window, camera, manager);
-    //scene->addSkybox(skybox);
+    scene->addSkybox(skybox);
     scene->addTerrain(terrain);
     //scene->addLight(pointLight);
 
@@ -54,7 +54,7 @@ void App::initShadersManager()
     terrainProgram.attachShader(Shader::createFragmentShader("shaders/terrain/terrain.frag"));
     terrainProgram.link();
 
-    //manager.setSkyboxProgram(Program("shaders/skybox/skybox.vs", "shaders/skybox/skybox.fs"));
+    manager.setSkyboxProgram(Program("shaders/skybox/skybox.vert", "shaders/skybox/skybox.frag"));
     //manager.setHDRProgram(Program("shaders/effect/hdr.vs", "shaders/effect/hdr.fs"));
     //manager.setBlurProgram(Program("shaders/effect/blur.vs", "shaders/effect/blur.fs"));
     //manager.setFontProgram(Program("shaders/font/font.vs", "shaders/font/font.fs"));

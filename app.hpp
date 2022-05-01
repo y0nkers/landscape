@@ -20,7 +20,7 @@ class App
 	//PostProcessing postHDR;
 	//PostProcessing post;
 	Scene* scene;
-	//Skybox skybox;
+	Skybox skybox;
 	Terrain terrain;
 	//Water water;
 	//Light pointLight;
