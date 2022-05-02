@@ -25,10 +25,10 @@ namespace EngineSpace
       if (Config::get().getSamples() > 0) glEnable(GL_MULTISAMPLE); // Мультисемплирование
       glEnable(GL_DEPTH_TEST); // Тест глубины
       glDepthFunc(GL_LESS); // khronos.org/registry/OpenGL-Refpages/gl4/html/glDepthFunc.xhtml
-      glEnable(GL_CULL_FACE);
-      glEnable(GL_BLEND);
-      glEnable(GL_CLIP_DISTANCE0);
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Функция смешивания цветов
+      glEnable(GL_CULL_FACE); // Отсечение задних граней
+      glEnable(GL_BLEND); // Включаем смешивание цветов
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Выбираем функцию смешивания цветов
+      glEnable(GL_CLIP_DISTANCE0); // Делаем доступной плоскость отсечения (gl_ClipDistance[0] в шейдере)
   }
 
   void Engine::initDeltaTime()

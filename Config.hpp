@@ -20,7 +20,7 @@ namespace EngineSpace
 		unsigned minorVersion = 1;
 		unsigned windowWidth = 1920;
 		unsigned windowHeight = 1080;
-		unsigned shadowSize = 1024;
+		unsigned shadowSize = 128;
 		unsigned samples = 8; // Количество сэмплов для сглаживания
 		float cameraPitch = 0;
 		float cameraYaw = -90;

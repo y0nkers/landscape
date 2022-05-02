@@ -1,11 +1,11 @@
-﻿/* Sobel operator for generating height map to normal map */
-/* Based on: https://stackoverflow.com/questions/2368728/can-normal-maps-be-generated-from-a-texture/2368794#2368794 */
+﻿// Sobel operator for generating height map to normal map
+// https://stackoverflow.com/questions/2368728/can-normal-maps-be-generated-from-a-texture/2368794#2368794
 
 #include "ConverterToNormalMap.hpp"
 
 namespace EngineSpace
 {
-    GLubyte ConverterToNormalMap::toRGB(const float& pixel)
+    GLubyte ConverterToNormalMap::toRGB(const float& pixel) // [-1; 1] -> [0; 255]
     {
         return (GLubyte)((pixel + 1.0f) * (255.0f / 2.0f));
     }
@@ -15,12 +15,10 @@ namespace EngineSpace
         return (data[(clamp(row, width) * width + clamp(column, height)) * 4]) / 255.0f;
     }
 
-    int ConverterToNormalMap::clamp(const int& value, const int& max)
+    int ConverterToNormalMap::clamp(const int& value, const int& max) // min(max(0, value), max)
     {
-        if (value > max)
-            return max;
-        else if (value < 0)
-            return 0;
+        if (value > max) return max;
+        else if (value < 0) return 0;
         return value;
     }
 
@@ -75,6 +73,7 @@ namespace EngineSpace
         }
 
         GLubyte* inputData = new GLubyte[width * height * 4];
+        
         prepareData(inputData, data, width, height);
         textureDestination.bind(GL_TEXTURE_2D);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, inputData);
