@@ -18,7 +18,7 @@ namespace EngineSpace
 			program.use();
 			program.setMat4("viewProject", camera->getViewProjectionMatrix());
 			program.setVec3("viewPos", camera->getPosition());
-			//program.setInt("lightsAmount", Light::amount);
+			program.setInt("lightsAmount", Light::amount);
 			program.setInt("allowShadows", allowShadows ? 1 : 0);
 			program.setVec4("clipPlane", clipPlane);
 		}
@@ -55,7 +55,7 @@ namespace EngineSpace
 		}
 	}
 
-	void Scene::render(const glm::vec4& clipPlane)
+	void Scene::render(bool polygonMode, const glm::vec4& clipPlane)
 	{
 		glViewport(0, 0, window.getWidth(), window.getHeight());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -67,7 +67,7 @@ namespace EngineSpace
 		renderObjects(manager.getObjectProgram());
 		renderAnimations(manager.getAnimProgram());
 		renderWaters(manager.getWaterProgram());
-		renderSkybox();
+		renderSkybox(polygonMode);
 	}
 
 	void Scene::renderObjects(Program& prog)
@@ -110,7 +110,7 @@ namespace EngineSpace
 		}
 	}
 
-	void Scene::renderSkybox()
+	void Scene::renderSkybox(bool polygonMode)
 	{
 		Program& skyboxProgram = manager.getSkyboxProgram();
 		if (skybox != nullptr && skyboxProgram.getId() != 0)
@@ -118,16 +118,17 @@ namespace EngineSpace
 			skyboxProgram.use();
 			glm::mat4 vp = camera->getProjectionMatrix() * glm::mat4(glm::mat3(camera->getViewMatrix()));
 			skyboxProgram.setMat4("viewProject", vp);
+			skyboxProgram.setBool("polygonMode", polygonMode);
 			skybox->render(skyboxProgram);
 		}
 	}
 
 	void Scene::renderLights()
 	{
-		/*Program & objProgram = manager.getObjectProgram();
-		Program & animProgram = manager.getAnimProgram();
-		Program & worldProgram = manager.getTerrainProgram();
-		Program & waterProgram = manager.getWaterProgram();
+		Program& objProgram = manager.getObjectProgram();
+		Program& animProgram = manager.getAnimProgram();
+		Program& worldProgram = manager.getTerrainProgram();
+		Program& waterProgram = manager.getWaterProgram();
 		bool isWorldProgram = worldProgram.getId() != 0;
 		bool isObjectProgram = objProgram.getId() != 0;
 		bool isAnimProgram = animProgram.getId() != 0;
@@ -135,41 +136,41 @@ namespace EngineSpace
 
 		for (unsigned i = 0; i < lights.size(); ++i)
 		{
-		  if (isObjectProgram)
-		  {
-			objProgram.use();
-			lights[i]->render(objProgram);
-		  }
+			if (isObjectProgram)
+			{
+				objProgram.use();
+				lights[i]->render(objProgram);
+			}
 
-		  if (isAnimProgram)
-		  {
-			animProgram.use();
-			lights[i]->render(animProgram);
-		  }
+			if (isAnimProgram)
+			{
+				animProgram.use();
+				lights[i]->render(animProgram);
+			}
 
-		  if (isWaterProgram)
-		  {
-			waterProgram.use();
-			lights[i]->render(waterProgram);
-		  }
+			if (isWaterProgram)
+			{
+				waterProgram.use();
+				lights[i]->render(waterProgram);
+			}
 
-		  if (isWorldProgram)
-		  {
-			worldProgram.use();
-			lights[i]->render(worldProgram);
-		  }
-		}*/
+			if (isWorldProgram)
+			{
+				worldProgram.use();
+				lights[i]->render(worldProgram);
+			}
+		}
 	}
 
-	/*void Scene::addLight(Light & obj)
+	void Scene::addLight(Light& obj)
 	{
-	  shadows.push_back(Shadow());
-	  lights.push_back(&obj);
-	}*/
+		//shadows.push_back(Shadow());
+		lights.push_back(&obj);
+	}
 
-	/*void Scene::removeLight(const unsigned & n)
+	void Scene::removeLight(const unsigned& n)
 	{
-	  shadows.erase(shadows.begin()+n);
-	  lights.erase(lights.begin()+n);
-	}*/
+		//shadows.erase(shadows.begin() + n);
+		lights.erase(lights.begin() + n);
+	}
 }

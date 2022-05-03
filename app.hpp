@@ -23,7 +23,7 @@ class App
 	Skybox skybox;
 	Terrain terrain;
 	//Water water;
-	//Light pointLight;
+	Light pointLight;
 	bool firstTime = true;
 	bool polygonMode = false;
 	float lastPosX = 0;

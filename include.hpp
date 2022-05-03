@@ -31,7 +31,7 @@
 //#include "renderable/model/MeshBone.hpp"
 //#include "renderable/model/Model.hpp"
 //#include "renderable/model/ModelAnim.hpp"
-//#include "renderable/light/Light.hpp"
+#include "Light.hpp"
 //#include "renderable/Material.hpp"
 #include "Skybox.hpp"
 #include "Terrain.hpp"

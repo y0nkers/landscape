@@ -111,6 +111,10 @@ namespace EngineSpace
         return glGetUniformLocation(programId, name);
     }
 
+    void Program::setBool(const char* name, bool b) const {
+        glUniform1i(getUniformId(name), b? 1: 0);
+    }
+
     void Program::setInt(const char* name, int i) const
     {
         glUniform1i(getUniformId(name), i);

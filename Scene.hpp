@@ -6,7 +6,7 @@
 #include "Terrain.hpp"
 #include "InterfaceCamera.hpp"
 #include "Window.hpp"
-//#include "../renderable/light/Light.hpp"
+#include "Light.hpp"
 //#include "../effect/Shadow.hpp"
 #include "ShadersManager.hpp"
 
@@ -22,7 +22,7 @@ namespace EngineSpace
 		std::vector<Renderable*> objects;
 		std::vector<Renderable*> animations;
 		std::vector<Renderable*> waters;
-		//std::vector<Light*> lights;
+		std::vector<Light*> lights;
 		//std::vector<Shadow> shadows;
 		bool allowShadows = true;
 
@@ -34,17 +34,17 @@ namespace EngineSpace
 		void renderAnimations(Program& prog);
 		void renderWaters(Program& prog);
 		void renderLights();
-		void renderSkybox();
+		void renderSkybox(bool polygonMode);
 
 	public:
 		Scene(Window& win, InterfaceCamera* cam, ShadersManager& shadersmanager) : window(win), camera(cam), manager(shadersmanager) { ; }
 
 		void renderShadows();
-		virtual void render(const glm::vec4& clipPlane = glm::vec4(0, 1, 0, 10000));
+		virtual void render(bool polygonMode, const glm::vec4& clipPlane = glm::vec4(0, 1, 0, 10000));
 
 		void addSkybox(Skybox& obj) { skybox = &obj; }
-		//void addLight(Light & obj);
-		//void removeLight(const unsigned & n);
+		void addLight(Light& obj);
+		void removeLight(const unsigned& n);
 
 		void addTerrain(Renderable& obj) { terrains.push_back(&obj); }
 		void addObject(Renderable& obj) { objects.push_back(&obj); }
@@ -61,7 +61,7 @@ namespace EngineSpace
 		std::vector<Renderable*>& getObjects() { return objects; }
 		std::vector<Renderable*>& getAnimations() { return animations; }
 		std::vector<Renderable*>& getWaters() { return waters; }
-		//std::vector<Light*> & getLights(){return lights;}
+		std::vector<Light*>& getLights() { return lights; }
 
 		void setShadows(bool val) { allowShadows = val; }
 		bool isAllowShadows() const { return allowShadows; }

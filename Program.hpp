@@ -32,6 +32,7 @@ namespace EngineSpace
 
         void use() const { glUseProgram(programId); }
 
+        void setBool(const char* name, bool b) const;
         void setInt(const char* name, int i) const;
         void setFloat(const char* name, float f) const;
         void setVec2(const char* name, const glm::vec2& vec) const;

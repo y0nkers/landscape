@@ -4,8 +4,9 @@ out vec4 fragColor;
 in vec3 texCoords;
 
 uniform samplerCube skybox;
+uniform bool polygonMode;
 
 void main()
 {
-  fragColor = texture(skybox, texCoords);
+	if (!polygonMode) fragColor = texture(skybox, texCoords);
 }
