@@ -22,7 +22,7 @@ namespace EngineSpace
         return value;
     }
 
-    glm::vec3 ConverterToNormalMap::calcNormal(const std::vector<GLubyte>& data, const unsigned& width, const unsigned& height, const int& row, const int& column)
+    glm::vec3 ConverterToNormalMap::calculateNormal(const std::vector<GLubyte>& data, const unsigned& width, const unsigned& height, const int& row, const int& column)
     {
         const float strength = 2.0f;
 
@@ -49,7 +49,7 @@ namespace EngineSpace
         {
             for (unsigned h = 0; h < height; ++h)
             {
-                glm::vec3 normal = calcNormal(data, width, height, w, h);
+                glm::vec3 normal = calculateNormal(data, width, height, w, h);
 
                 unsigned index = (w * width + h) * 4;
                 inputData[index] = toRGB(normal.x);

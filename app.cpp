@@ -146,6 +146,8 @@ void App::keyboardInput(GLFWwindow* win)
 		camera->moveLeft();
 	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
 		camera->moveRight();
+	if (!camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { camera->setSpeed(camera->getSpeed() * 5); camera->toggleSpeedUp(); }
+	else if (camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) { camera->setSpeed(camera->getSpeed() / 5); camera->toggleSpeedUp(); }
 
 	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		polygonMode = !polygonMode;

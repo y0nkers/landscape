@@ -29,7 +29,9 @@ namespace EngineSpace
     virtual float getFov() const = 0;
     virtual float getNear() const = 0;
     virtual float getFar() const = 0;
+    virtual bool isSpeedUp() const = 0;
 
+    virtual void toggleSpeedUp() = 0;
     virtual void setPosition(const glm::vec3 & vec) = 0;
     virtual void setDirection(const glm::vec3 & vec) = 0;
     virtual void setPitch(const float & val) = 0;
@@ -39,6 +41,7 @@ namespace EngineSpace
     virtual void setFar(const float & val) = 0;
     virtual void setNear(const float & val) = 0;
     virtual void setSensitivity(const float & val) = 0;
+    
   };
 }
 #endif
