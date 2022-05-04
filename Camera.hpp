@@ -8,15 +8,15 @@ namespace EngineSpace
 {
 	class Camera
 	{
-		glm::vec3 position; // Вектор позиции камеры
-		glm::vec3 direction; // Вектор куда смотрит камера
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); // Где находится верх у камеры
-		glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f); // Вверх мировой
+		glm::vec3 position; // Р’РµРєС‚РѕСЂ РїРѕР·РёС†РёРё РєР°РјРµСЂС‹
+		glm::vec3 direction; // Р’РµРєС‚РѕСЂ РєСѓРґР° СЃРјРѕС‚СЂРёС‚ РєР°РјРµСЂР°
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); // Р“РґРµ РЅР°С…РѕРґРёС‚СЃСЏ РІРµСЂС… Сѓ РєР°РјРµСЂС‹
+		glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f); // Р’РІРµСЂС… РјРёСЂРѕРІРѕР№
 		glm::vec3 right;
-		float pitch; // угол наклона вперёд/назад
-		float yaw; // поворот влево/вправо в горизонтальной плоскости
+		float pitch; // СѓРіРѕР» РЅР°РєР»РѕРЅР° РІРїРµСЂС‘Рґ/РЅР°Р·Р°Рґ
+		float yaw; // РїРѕРІРѕСЂРѕС‚ РІР»РµРІРѕ/РІРїСЂР°РІРѕ РІ РіРѕСЂРёР·РѕРЅС‚Р°Р»СЊРЅРѕР№ РїР»РѕСЃРєРѕСЃС‚Рё
 		float speed;
-		float sensitivity; // Чувствительность к повороту
+		float sensitivity; // Р§СѓРІСЃС‚РІРёС‚РµР»СЊРЅРѕСЃС‚СЊ Рє РїРѕРІРѕСЂРѕС‚Сѓ
 		float fov;
 		float far;
 		float near;
@@ -64,8 +64,8 @@ namespace EngineSpace
 		void setSensitivity(const float& val) { sensitivity = val; }
 
 		// getters
-		glm::mat4 getViewMatrix() const { return glm::lookAt(position, position + direction, up); } // Матрица взгляда
-		glm::mat4 getProjectionMatrix() const { return glm::perspective(glm::radians(getFov()), (float)window.getWidth() / (float)window.getHeight(), getNear(), getFar()); } // Матрица перспективы
+		glm::mat4 getViewMatrix() const { return glm::lookAt(position, position + direction, up); } // РњР°С‚СЂРёС†Р° РІР·РіР»СЏРґР°
+		glm::mat4 getProjectionMatrix() const { return glm::perspective(glm::radians(getFov()), (float)window.getWidth() / (float)window.getHeight(), getNear(), getFar()); } // РњР°С‚СЂРёС†Р° РїРµСЂСЃРїРµРєС‚РёРІС‹
 		glm::mat4 getViewProjectionMatrix() const { return getProjectionMatrix() * getViewMatrix(); }
 		glm::vec3 getPosition() const { return position; }
 		glm::vec3 getDirection() const { return direction; }
