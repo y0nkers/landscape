@@ -1,13 +1,14 @@
 ﻿#include "app.hpp"
 
 App::App(Window& win) :
-	window(win), perspectiveCamera(win), camera(&perspectiveCamera),
+	window(win), 
 	//bloomEffect(win), post(win), postHDR(win, 2), water(win, camera),
 	//fontRenderer(win, Font("fonts/arial.ttf")),
 	pointLight(glm::vec3(0.0f, 50.0f, 0.0f), glm::vec3(2.0f), glm::vec3(2.1f), glm::vec3(1.0f), 1.0f, 0.0f, 0.0f)
 {
 	initShadersManager();
 
+	camera = new Camera(win);
 	camera->setPosition(glm::vec3(0.0f, 25.0f, 0.0f));
 	camera->rotate(50, -80);
 
@@ -64,7 +65,7 @@ void App::initShadersManager()
 	//manager.setTerrainDepthProgram(depthTerrainProgram);
 }
 
-App::~App() { delete scene; }
+App::~App() { delete camera; delete scene; }
 
 void App::render()
 {

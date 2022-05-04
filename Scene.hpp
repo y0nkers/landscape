@@ -4,7 +4,7 @@
 #include <vector>
 #include "Skybox.hpp"
 #include "Terrain.hpp"
-#include "InterfaceCamera.hpp"
+#include "Camera.hpp"
 #include "Window.hpp"
 #include "Light.hpp"
 //#include "../effect/Shadow.hpp"
@@ -16,7 +16,7 @@ namespace EngineSpace
 	{
 		Window& window;
 		ShadersManager& manager;
-		InterfaceCamera* camera = nullptr;
+		Camera* camera = nullptr;
 		Skybox* skybox = nullptr;
 		std::vector<Renderable*> terrains;
 		std::vector<Renderable*> objects;
@@ -37,7 +37,7 @@ namespace EngineSpace
 		void renderSkybox(bool polygonMode);
 
 	public:
-		Scene(Window& win, InterfaceCamera* cam, ShadersManager& shadersmanager) : window(win), camera(cam), manager(shadersmanager) { ; }
+		Scene(Window& win, Camera* cam, ShadersManager& shadersmanager) : window(win), camera(cam), manager(shadersmanager) { ; }
 
 		void renderShadows();
 		virtual void render(bool polygonMode, const glm::vec4& clipPlane = glm::vec4(0, 1, 0, 10000));

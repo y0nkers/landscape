@@ -11,8 +11,7 @@ class App
 
 	Window& window;
 	ShadersManager manager;
-	InterfaceCamera* camera;
-	PerspectiveCamera perspectiveCamera;
+	Camera* camera;
 	//FontRenderer fontRenderer;
 	TextureGenerator2D generator;
 	ConverterToNormalMap conventer;
