@@ -1,5 +1,6 @@
 ﻿#ifndef CONVERTER_TO_NORMAL_MAP_HPP
 #define CONVERTER_TO_NORMAL_MAP_HPP 1
+
 #include "Texture.hpp"
 
 namespace EngineSpace

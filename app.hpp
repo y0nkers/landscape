@@ -1,5 +1,6 @@
 ﻿#ifndef TERRAIN_APP_HPP
 #define TERRAIN_APP_HPP 1
+
 #include "include.hpp"
 
 using namespace EngineSpace;
@@ -12,34 +13,24 @@ class App
 	Window& window;
 	ShadersManager manager;
 	Camera* camera;
-	//FontRenderer fontRenderer;
 	TextureGenerator2D generator;
 	ConverterToNormalMap conventer;
-	//Bloom bloomEffect;
-	//PostProcessing postHDR;
-	//PostProcessing post;
 	Scene* scene;
 	Skybox skybox;
 	Terrain terrain;
-	//Water water;
 	Light pointLight;
 	bool firstTime = true;
 	bool polygonMode = false;
 	float lastPosX = 0;
 	float lastPosY = 0;
-	bool isWater = true;
 
 	void initShadersManager();
+	void generateFlat();
 	void generatePerlinPlain();
 	void generatePerlinLowLands();
 	void generatePerlinHighLands();
 	void generatePerlinLittleMountains();
 	void generatePerlinMountains();
-	/*void generateSmooth256();
-	void generateSmooth128();
-	void generateSmooth64();
-	void generateSmooth32();
-	void generateSmooth16();*/
 
 public:
 	App(Window& win);

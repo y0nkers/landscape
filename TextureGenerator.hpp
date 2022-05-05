@@ -1,5 +1,6 @@
 ﻿#ifndef TEXTURE_GENERATOR_HPP
 #define TEXTURE_GENERATOR_HPP 1
+
 #include "Texture.hpp"
 
 namespace EngineSpace

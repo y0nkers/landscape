@@ -1,5 +1,6 @@
 ﻿#ifndef TEXTURE_LOADER_HPP
 #define TEXTURE_LOADER_HPP 1
+
 #include <iostream>
 #include <stdexcept>
 #include <vector>

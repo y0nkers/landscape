@@ -1,13 +1,14 @@
 ﻿#ifndef CONFIG_HPP
 #define CONFIG_HPP 1
-#define DEBUG_ENGINE 0 // 1 если надо показывать ошибки opengl
+#define DEBUG_ENGINE 0 // Engine errors
+
 #include "Singleton.hpp"
 #include "json.hpp"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-using json = nlohmann::json; // Для конфиг файла
+using json = nlohmann::json; // json reader
 
 namespace EngineSpace
 {
@@ -20,7 +21,6 @@ namespace EngineSpace
 		unsigned minorVersion = 1;
 		unsigned windowWidth = 1920;
 		unsigned windowHeight = 1080;
-		unsigned shadowSize = 1024;
 		unsigned samples = 8; // Количество сэмплов для сглаживания
 		float cameraPitch = 0;
 		float cameraYaw = -90;
@@ -29,11 +29,9 @@ namespace EngineSpace
 		float cameraFov = 45;
 		float cameraFar = 1000;
 		float cameraNear = 0.05;
-		float shadowFar = 500;
 		float anisotropy = 8;
 		glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-		glm::vec3 gravity = glm::vec3(0.0f, -9.81f, 0.0f);
 
 		Config() {
 			std::ifstream i("config.json");
@@ -43,7 +41,6 @@ namespace EngineSpace
 
 			windowWidth = json["windowWidth"];
 			windowHeight = json["windowHeight"];
-			shadowSize = json["shadowSize"];
 			samples = json["samples"];
 			cameraPitch = json["cameraPitch"];
 			cameraYaw = json["cameraYaw"];
@@ -52,7 +49,6 @@ namespace EngineSpace
 			cameraFov = json["cameraFov"];
 			cameraFar = json["cameraFar"];
 			cameraNear = json["cameraNear"];
-			shadowFar = json["shadowFar"];
 			anisotropy = json["anisotropy"];
 		}
 
@@ -62,7 +58,6 @@ namespace EngineSpace
 		unsigned getWindowHeight() const { return windowHeight; }
 		unsigned getMajorVersion() const { return majorVersion; }
 		unsigned getMinorVersion() const { return minorVersion; }
-		unsigned getShadowSize() const { return shadowSize; }
 		unsigned getSamples() const { return samples; }
 		float getCameraPitch() const { return cameraPitch; }
 		float getCameraYaw() const { return cameraYaw; }
@@ -73,9 +68,7 @@ namespace EngineSpace
 		float getCameraNear() const { return cameraNear; }
 		glm::vec3 getCameraPosition() const { return cameraPosition; }
 		glm::vec3 getCameraDirection() const { return cameraDirection; }
-		float getShadowFar() const { return shadowFar; }
 		float getAnisotropy() const { return anisotropy; }
-		glm::vec3 getGravity() const { return gravity; }
 	};
 }
 #endif

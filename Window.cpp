@@ -8,7 +8,7 @@ namespace EngineSpace
 
 		Engine::get().initGLFW();
 		float samples = Config::get().getSamples();
-		if (samples > 0) glfwWindowHint(GLFW_SAMPLES, samples); // Сглаживание с помощью сэмплирования
+		if (samples > 0) glfwWindowHint(GLFW_SAMPLES, samples); // MSAA
 		window = glfwCreateWindow(width, height, title.c_str(), isFullscreen? glfwGetPrimaryMonitor() : nullptr, nullptr);
 		
 		if (!window) throw std::runtime_error("Cant create GLFW window.");

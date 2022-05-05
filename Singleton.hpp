@@ -1,5 +1,6 @@
 ﻿#ifndef SINGLETON_HPP
 #define SINGLETON_HPP 1
+
 #include <iostream>
 
 namespace EngineSpace

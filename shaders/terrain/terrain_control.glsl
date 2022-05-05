@@ -7,7 +7,7 @@ layout (vertices = 4) out; // „исло вершин в патче
 in vec2 tc[];
 out vec2 tc_out[];
 
-uniform int maxTessLevel;
+uniform int tesselationLevel;
 uniform mat4 viewProject;
 uniform mat4 model;
 
@@ -24,14 +24,14 @@ uniform mat4 model;
 
 float calcTessLevel()
 {
-	const int minLevel = 4;
+	const int minTess = 4;
 	const float minDepth = 0.001;
 	const float maxDepth = 30.0;
 
 	vec4 p = viewProject * model * gl_in[gl_InvocationID].gl_Position;
 
 	float depth = clamp((abs(p.z) - minDepth)/(maxDepth - minDepth), 0.0, 1.0); // ограничить 1 значение между 2 и 3. return min(max(1,2), 3)
-	float tl = mix(maxTessLevel, minLevel, depth); // линейна€ интерпол€ци€ между 1 и 2 с помощью 3
+	float tl = mix(tesselationLevel, minTess, depth); // линейна€ интерпол€ци€ между 1 и 2 с помощью 3
 	return tl;
 }
 

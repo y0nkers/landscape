@@ -9,10 +9,7 @@ namespace EngineSpace
         *amount = 1;
     }
 
-    Terrain::Terrain(const Terrain& terrain)
-    {
-        swap(terrain);
-    }
+    Terrain::Terrain(const Terrain& terrain) { swap(terrain); }
 
     Terrain& Terrain::operator=(const Terrain& terrain)
     {
@@ -27,16 +24,13 @@ namespace EngineSpace
         textureHeight = terrain.textureHeight;
         textureNormal = terrain.textureNormal;
         depth = terrain.depth;
-        maxTessLevel = terrain.maxTessLevel;
+        tesselationLevel = terrain.tesselationLevel;
         VAO = terrain.VAO;
         amount = terrain.amount;
         *amount = *amount + 1;
     }
 
-    Terrain::~Terrain()
-    {
-        clear();
-    }
+    Terrain::~Terrain() { clear(); }
 
     void Terrain::clear()
     {
@@ -54,7 +48,7 @@ namespace EngineSpace
 
         Transformationable::render(program);
         program.setFloat("depth", depth);
-        program.setInt("maxTessLevel", maxTessLevel);
+        program.setInt("tesselationLevel", tesselationLevel);
 
         Texture::active(0);
         program.setInt("heightMap", 0);

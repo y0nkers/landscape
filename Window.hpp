@@ -1,5 +1,6 @@
 #ifndef WINDOW_HPP
 #define WINDOW_HPP 1
+
 #include <stdexcept>
 #include "Engine.hpp"
 

@@ -55,7 +55,7 @@ namespace EngineSpace
                 inputData[index] = toRGB(normal.x);
                 inputData[index + 1] = toRGB(normal.y);
                 inputData[index + 2] = toRGB(normal.z);
-                inputData[index + 3] = (GLubyte)255;
+                inputData[index + 3] = (GLubyte)255; // alpha (non transparent)
             }
         }
     }
@@ -72,7 +72,7 @@ namespace EngineSpace
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, Config::get().getAnisotropy());
         }
 
-        GLubyte* inputData = new GLubyte[width * height * 4];
+        GLubyte* inputData = new GLubyte[width * height * 4]; // texture
 
         prepareData(inputData, data, width, height);
         textureDestination.bind(GL_TEXTURE_2D);

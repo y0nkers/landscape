@@ -1,5 +1,6 @@
 #ifndef CUBE_HPP
 #define CUBE_HPP 1
+
 #include "Shape.hpp"
 
 namespace EngineSpace

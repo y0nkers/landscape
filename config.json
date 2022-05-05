@@ -1,7 +1,6 @@
 {
     "windowWidth": 1280,
     "windowHeight": 1024,
-    "shadowSize": 512,
     "samples": 8,
     "cameraPitch": 0,
     "cameraYaw": -90,
@@ -10,6 +9,5 @@
     "cameraFov": 45,
     "cameraFar": 1000,
     "cameraNear": 0.05,
-    "shadowFar": 500,
     "anisotropy": 8
 }

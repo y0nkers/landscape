@@ -18,9 +18,6 @@ namespace EngineSpace
 		float constant;
 		float linear;
 		float quadratic;
-		std::vector<glm::mat4> shadowTransforms;
-
-		void generateShadowTransforms();
 
 	public:
 		static unsigned amount;
@@ -36,12 +33,12 @@ namespace EngineSpace
 			diffuse(pDiffuse), specular(pSpecular),
 			constant(pConstant), linear(pLinear),
 			quadratic(pQuadratic) {
-			index = amount++; generateShadowTransforms();
+			index = amount++;
 		}
 
 		virtual void render(Program& program);
 
-		void setPosition(const glm::vec3& pos) { position = pos; generateShadowTransforms(); }
+		void setPosition(const glm::vec3& pos) { position = pos; }
 		void setAmbient(const glm::vec3& color) { ambient = color; }
 		void setDiffuse(const glm::vec3& color) { diffuse = color; }
 		void setSpecular(const glm::vec3& color) { specular = color; }
@@ -57,8 +54,6 @@ namespace EngineSpace
 		float getLinear() const { return linear; }
 		float getQuadratic() const { return quadratic; }
 		unsigned getIndex() const { return index; }
-
-		const  std::vector<glm::mat4>& getShadowTransforms() const { return shadowTransforms; }
 	};
 }
 #endif

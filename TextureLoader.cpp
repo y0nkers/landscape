@@ -63,12 +63,9 @@ namespace EngineSpace
 
     GLenum TextureLoader::getFormat(const unsigned& nrChannels)
     {
-        if (nrChannels == 1)
-            return GL_RED;
-        else if (nrChannels == 3)
-            return GL_RGB;
-        else if (nrChannels == 4)
-            return GL_RGBA;
+        if (nrChannels == 1) return GL_RED;
+        else if (nrChannels == 3) return GL_RGB;
+        else if (nrChannels == 4) return GL_RGBA;
         else throw std::runtime_error("Cant detect the format of the image from the number of channels");
     }
 }

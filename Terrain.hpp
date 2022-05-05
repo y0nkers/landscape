@@ -1,5 +1,6 @@
 #ifndef TERRAIN_HPP
 #define TERRAIN_HPP 1
+
 #include "Texture.hpp"
 #include "Transformationable.hpp"
 
@@ -12,7 +13,7 @@ namespace EngineSpace
         Texture textureHeight;
         Texture textureNormal;
         float depth = 0.05;
-        unsigned maxTessLevel = 8;
+        unsigned tesselationLevel = 8;
         unsigned VAO = 0;
         unsigned* amount;
 
@@ -36,8 +37,8 @@ namespace EngineSpace
         void setDepth(const float& d) { depth = d; }
         float getDepth() const { return depth; }
 
-        void setTessLevel(const unsigned& tl) { maxTessLevel = tl; }
-        unsigned getTessLevel() const { return maxTessLevel; }
+        void setTessLevel(const unsigned& level) { tesselationLevel = level; }
+        unsigned getTessLevel() const { return tesselationLevel; }
     };
 }
 #endif
