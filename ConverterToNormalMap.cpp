@@ -17,7 +17,7 @@ namespace EngineSpace
 
     int ConverterToNormalMap::clamp(const int& value, const int& max) // min(max(0, value), max)
     {
-        if (value > max) return max;
+        if (value >= max) return max - 1;
         else if (value < 0) return 0;
         return value;
     }
@@ -73,7 +73,7 @@ namespace EngineSpace
         }
 
         GLubyte* inputData = new GLubyte[width * height * 4];
-        
+
         prepareData(inputData, data, width, height);
         textureDestination.bind(GL_TEXTURE_2D);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, inputData);
