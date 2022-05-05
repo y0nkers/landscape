@@ -15,7 +15,6 @@ namespace EngineSpace
 			program.setMat4("viewProject", camera->getViewProjectionMatrix());
 			program.setVec3("viewPos", camera->getPosition());
 			program.setInt("lightsAmount", Light::amount);
-			program.setInt("allowShadows", allowShadows ? 1 : 0);
 			program.setVec4("clipPlane", clipPlane);
 		}
 	}

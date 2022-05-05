@@ -9,14 +9,6 @@ in vec3 fragPos;
 const int SHININESS = 32;
 const vec3 BRIGHT_FACTOR = vec3(0.2126, 0.7152, 0.0722);
 const int AMOUNT_OF_POINT_LIGHTS = 1;
-const int DISCS_PCF_AMOUNT = 20;
-const vec3 DISCS_PCF[DISCS_PCF_AMOUNT] = vec3[](
-   vec3(1, 1, 1), vec3(1, -1, 1), vec3(-1, -1, 1), vec3(-1, 1, 1),
-   vec3(1, 1, -1), vec3(1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
-   vec3(1, 1, 0), vec3(1, -1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
-   vec3(1, 0, 1), vec3(-1, 0, 1), vec3(1, 0, -1), vec3(-1, 0, -1),
-   vec3(0, 1, 1), vec3(0, -1, 1), vec3(0, -1, -1), vec3(0, 1, -1)
-);
 
 struct PointLight
 {
@@ -37,35 +29,12 @@ uniform vec3 viewPos;
 uniform float farPlane;
 uniform int lightsAmount;
 uniform PointLight lights[AMOUNT_OF_POINT_LIGHTS];
-uniform samplerCube shadowMaps[AMOUNT_OF_POINT_LIGHTS];
-uniform int allowShadows;
-
-float shadowCalculation(samplerCube shadowMap, vec3 lightPos)
-{
-    const float bias = 0.25;
-
-    vec3 LightToFragDir = fragPos - lightPos;
-    float currentDepth = length(LightToFragDir) - bias;
-    float viewDistance = length(viewPos - fragPos);
-    float diskRadius = clamp(viewDistance / farPlane, 0.005, 0.02);
-
-    float shadow = 0.0;
-    for (int i = 0; i < DISCS_PCF_AMOUNT; ++i)
-    {
-      float closestDepth = texture(shadowMap, LightToFragDir + DISCS_PCF[i] * diskRadius).r;
-      closestDepth *= farPlane;
-      if (currentDepth > closestDepth)
-        shadow += 1.0;
-    }
-    shadow /= float(DISCS_PCF_AMOUNT);
-    return shadow;
-}
 
 float getAttenuation(PointLight light, float dist) {
     return 1.0 / (light.constant + light.linear * dist + light.quadratic * dist * dist); // Коэффициент затухания
 }
 
-vec3 calcPointLight(PointLight light, vec3 material, vec3 viewDir, vec3 normal, float shadow)
+vec3 calcPointLight(PointLight light, vec3 material, vec3 viewDir, vec3 normal)
 {
     vec3 fragToLightDir = fragPos - light.position;
     float dist = length(fragToLightDir);
@@ -82,8 +51,8 @@ vec3 calcPointLight(PointLight light, vec3 material, vec3 viewDir, vec3 normal, 
     float specular_coef = pow(max(dot(halfwayDir, normal), 0.0), SHININESS);
     vec3 specular = light.specular * specular_coef * material;
     
-    return (ambient + (1.0 - shadow) * (diffuse + specular)) * attenuation * material;
-    //return (ambient + (1.0 - shadow) * (diffuse + specular)) * attenuation;
+    return (ambient + diffuse + specular) * attenuation * material;
+    //return (ambient + diffuse + specular) * attenuation;
 }
 
 vec3 blendColor(vec3 rgbA, vec3 rgbB, vec3 rgbC, float alpha) // Смешивание цветов
@@ -126,9 +95,7 @@ void main()
     vec3 result = vec3(0.0, 0.0, 0.0);
     for (int i = 0; i < lightsAmount; ++i)
     {
-      float pointShadow = 0.0;
-      if (allowShadows == 1) pointShadow = shadowCalculation(shadowMaps[i], lights[i].position);
-      result += calcPointLight(lights[i], material, viewDir, normal, pointShadow);
+      result += calcPointLight(lights[i], material, viewDir, normal);
     }
 
     float brightness = dot(result, BRIGHT_FACTOR);

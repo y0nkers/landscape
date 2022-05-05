@@ -19,7 +19,6 @@ namespace EngineSpace
 		Skybox* skybox = nullptr;
 		std::vector<Renderable*> terrains;
 		std::vector<Light*> lights;
-		bool allowShadows = true;
 
 		void initProgram(Program& program, const glm::vec4& clipPlane);
 		void initPrograms(const glm::vec4& clipPlane);
