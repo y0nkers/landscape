@@ -20,7 +20,7 @@ int main()
 	srand((unsigned)time(NULL));
 	try
 	{
-		bool isFullScreen = true;
+		bool isFullScreen = false;
 		window = new Window;
 		window->create(isFullScreen);
 		window->setTitle("Terrain Generator");
@@ -29,11 +29,11 @@ int main()
 		window->setEventResize(resizeEvent);
 		window->setEventInput(processInput);
 		window->setEventMouseMove(mouseMoveEvent);
-    window->setEventMouseButton(mouseButtonEvent);
+		window->setEventMouseButton(mouseButtonEvent);
 		window->setEventScroll(onScroll);
 		window->setInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-		
 		window->open();
+
 		delete editor;
 		delete window;
 	}

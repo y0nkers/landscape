@@ -16,7 +16,6 @@ App::App(Window& win) :
 	terrain.setPosition(glm::vec3(0.0f));
 	terrain.setScale(glm::vec3(1.0f));
 
-
 	scene = new Scene(window, camera, manager);
 	scene->addSkybox(skybox);
 	scene->addTerrain(terrain);
