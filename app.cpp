@@ -2,20 +2,19 @@
 
 App::App(Window& win) :
 	window(win), 
-	pointLight(glm::vec3(0.0f, 50.0f, 0.0f), glm::vec3(2.0f), glm::vec3(2.1f), glm::vec3(1.0f), 1.0f, 0.0f, 0.0f)
+	pointLight(glm::vec3(0.0f, 10.0f, 0.0f), glm::vec3(2.0f), glm::vec3(2.1f), glm::vec3(1.0f), 1.0f, 0.0f, 0.0f)
 {
 	initShadersManager();
 
 	camera = new Camera(win);
-	camera->setPosition(glm::vec3(0.0f, 25.0f, 0.0f));
-	camera->rotate(50, -80);
+	camera->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
 	skybox.getTexture().load({ "textures/skybox/right.jpg", "textures/skybox/left.jpg", "textures/skybox/top.jpg", "textures/skybox/bottom.jpg", "textures/skybox/front.jpg", "textures/skybox/back.jpg" });
 
 	terrain.getGrassTexture().load("textures/grass.jpg", GL_TEXTURE_2D);
 	terrain.getStoneTexture().load("textures/stone.jpg", GL_TEXTURE_2D);
 	terrain.setPosition(glm::vec3(0.0f));
-	terrain.setScale(glm::vec3(500.0f));
+	terrain.setScale(glm::vec3(1.0f));
 
 
 	scene = new Scene(window, camera, manager);
@@ -76,6 +75,52 @@ void App::scroll(const double& x, const double& y) {
 	camera->changeFOV(y);
 }
 
+void App::mouseButton(GLFWwindow* win, int button, int action, int mods)
+{
+	//if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_REPEAT)
+	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	{
+		double xpos = 0, ypos = 0;
+		glfwGetCursorPos(win, &xpos, &ypos);
+		//static double x = xpos, y = ypos;
+		std::cout << "Mouse button pressed." << std::endl;
+
+		std::cout << "Cursor Position at (" << xpos << ";" << ypos << ")" << std::endl;
+		terrain.toggleClick();
+		terrain.setClickPoint(calculateRay(xpos, ypos));
+	}
+	else if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	{
+		terrain.toggleClick();
+		terrain.setClickPoint(glm::vec3(0.0f));
+		std::cout << "Mouse button released." << std::endl;
+	}
+}
+
+glm::vec3 App::calculateRay(double mouse_x, double mouse_y)
+{
+	// 3d normalised device coordinates. range [-1:1, -1:1, -1:1]
+	float x = (2.0f * mouse_x) / window.getWidth() - 1.0f;
+	float y = 1.0f - (2.0f * mouse_y) / window.getHeight();
+	float z = 1.0f;
+	glm::vec3 ray_nds = glm::vec3(x, y, z);
+
+	// 4d Homogeneous Clip Coordinates. range [-1:1, -1:1, -1:1, -1:1]
+	glm::vec4 ray_clip = glm::vec4(ray_nds.xy, -1.0, 1.0); // z point forward
+
+	// 4d Eye (Camera) Coordinates. range [-x:x, -y:y, -z:z, -w:w]
+	glm::vec4 ray_eye = glm::inverse(camera->getProjectionMatrix()) * ray_clip;
+	ray_eye = glm::vec4(ray_eye.xy, -1.0, 0.0);
+
+	// 4d World Coordinates. range [-x:x, -y:y, -z:z, -w:w]
+	glm::vec3 ray_world = (glm::inverse(camera->getViewMatrix()) * ray_eye).xyz;
+	// don't forget to normalise the vector at some point
+	ray_world = glm::normalize(ray_world);
+	std::cout << glm::to_string(ray_world) << std::endl;
+	//std::cout << ray_world.x << std::endl << ray_world.y << std::endl << ray_world.z << std::endl;
+	return ray_world;
+}
+
 void App::keyboardInput(GLFWwindow* win)
 {
 	// Close window - ESC
@@ -86,8 +131,8 @@ void App::keyboardInput(GLFWwindow* win)
 	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS) camera->moveLeft();
 	if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS) camera->moveBottom();
 	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS) camera->moveRight();
-	if (!camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { camera->setSpeed(camera->getSpeed() * 5); camera->toggleSpeedUp(); }
-	else if (camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) { camera->setSpeed(camera->getSpeed() / 5); camera->toggleSpeedUp(); }
+	if (!camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { camera->setSpeed(camera->getSpeed() * 4); camera->toggleSpeedUp(); }
+	else if (camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) { camera->setSpeed(camera->getSpeed() / 4); camera->toggleSpeedUp(); }
 
 	// Change camera mode - C
 	if (glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS)

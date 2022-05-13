@@ -40,6 +40,7 @@ namespace EngineSpace
 		void setEventKeyPress(void (*func)(GLFWwindow*, int, int, int, int)) { glfwSetKeyCallback(window, func); }
 		void setEventInput(void (*func)(GLFWwindow*)) { inputCallback = func; }
 		void setEventMouseMove(void (*func)(GLFWwindow*, double, double)) { glfwSetCursorPosCallback(window, func); }
+		void setEventMouseButton(void (*func)(GLFWwindow*, int, int, int)) { glfwSetMouseButtonCallback(window, func); }
 		void setEventScroll(void (*func)(GLFWwindow*, double, double)) { glfwSetScrollCallback(window, func); }
 
 		int getInputMode(const int& type) { return glfwGetInputMode(window, type); }

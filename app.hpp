@@ -1,4 +1,4 @@
-﻿#ifndef TERRAIN_APP_HPP
+#ifndef TERRAIN_APP_HPP
 #define TERRAIN_APP_HPP 1
 
 #include "include.hpp"
@@ -31,6 +31,7 @@ class App
 	void generatePerlinHighLands();
 	void generatePerlinLittleMountains();
 	void generatePerlinMountains();
+	glm::vec3 calculateRay(double mouse_x, double mouse_y);
 
 public:
 	App(Window& win);
@@ -40,6 +41,7 @@ public:
 	void resize(const unsigned& width, const unsigned& height);
 	void mouseMove(const double& posX, const double& posY);
 	void scroll(const double& x, const double& y);
+	void mouseButton(GLFWwindow* win, int button, int action, int mods);
 	void keyboardInput(GLFWwindow* win);
 };
 #endif

@@ -1,13 +1,13 @@
 {
-    "windowWidth": 1280,
-    "windowHeight": 1024,
+    "windowWidth": 1920,
+    "windowHeight": 1080,
     "samples": 8,
     "cameraPitch": 0,
-    "cameraYaw": -90,
-    "cameraSpeed": 7,
+    "cameraYaw": 0,
+    "cameraSpeed": 0.5,
     "cameraSensitivity": 0.1,
     "cameraFov": 45,
     "cameraFar": 1000,
-    "cameraNear": 0.05,
+    "cameraNear": 0.01,
     "anisotropy": 8
 }
