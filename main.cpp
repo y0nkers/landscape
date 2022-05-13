@@ -12,6 +12,7 @@ void loop() { editor->render(); }
 void resizeEvent(GLFWwindow* win, int w, int h) { editor->resize(w, h); }
 void mouseEvent(GLFWwindow* win, double posX, double posY) { editor->mouseMove(posX, posY); }
 void processInput(GLFWwindow* win) { editor->keyboardInput(win); }
+void onScroll(GLFWwindow* win, double x, double y) { editor->scroll(x, y); }
 
 int main()
 {
@@ -26,6 +27,7 @@ int main()
 		window->setEventResize(resizeEvent);
 		window->setEventInput(processInput);
 		window->setEventMouseMove(mouseEvent);
+		window->setEventScroll(onScroll);
 		window->setInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		window->open();
 		delete editor;

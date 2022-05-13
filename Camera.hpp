@@ -1,5 +1,6 @@
 #ifndef CAMERA_HPP
 #define CAMERA_HPP 1
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Window.hpp"
@@ -48,6 +49,7 @@ namespace EngineSpace
 		void moveBottom();
 		void moveRight();
 		void moveLeft();
+		void changeFOV(const double& value);
 		void updateVectors();
 		void rotate(const float& offsetX, const float& offsetY);
 

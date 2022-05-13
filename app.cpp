@@ -31,15 +31,6 @@ void App::initShadersManager()
 	Shader terrainVertex = Shader::createVertexShader("shaders/terrain/terrain.vert");
 	Shader terrainTessControl = Shader::createTessalationControlShader("shaders/terrain/terrain_control.glsl");
 
-	/*Program depthTerrainProgram;
-	depthTerrainProgram.create();
-	depthTerrainProgram.attachShader(terrainVertex);
-	depthTerrainProgram.attachShader(terrainTessControl);
-	depthTerrainProgram.attachShader(Shader::createTessalationEvaluationShader("shaders/depth/terrain_eval_depth.glsl"));
-	depthTerrainProgram.attachShader(Shader::createGeometryShader("shaders/depth/depth.gs"));
-	depthTerrainProgram.attachShader(Shader::createFragmentShader("shaders/depth/depth.fs"));
-	depthTerrainProgram.link();*/
-
 	Program terrainProgram;
 	terrainProgram.create();
 	terrainProgram.attachShader(terrainVertex);
@@ -50,7 +41,6 @@ void App::initShadersManager()
 
 	manager.setSkyboxProgram(Program("shaders/skybox/skybox.vert", "shaders/skybox/skybox.frag"));
 	manager.setTerrainProgram(terrainProgram);
-	//manager.setTerrainDepthProgram(depthTerrainProgram);
 }
 
 App::~App() { delete camera; delete scene; }
@@ -76,9 +66,14 @@ void App::mouseMove(const double& posX, const double& posY)
 		lastPosY = posY;
 		firstTime = false;
 	}
-	camera->rotate(posX - lastPosX, lastPosY - posY);
+	if (window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_DISABLED) camera->rotate(posX - lastPosX, lastPosY - posY);
 	lastPosX = posX;
 	lastPosY = posY;
+	// std::cout << "Mouse position: x = " << lastPosX << ", y = " << lastPosY << std::endl;
+}
+
+void App::scroll(const double& x, const double& y) {
+	camera->changeFOV(y);
 }
 
 void App::keyboardInput(GLFWwindow* win)
@@ -94,6 +89,10 @@ void App::keyboardInput(GLFWwindow* win)
 	if (!camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) { camera->setSpeed(camera->getSpeed() * 5); camera->toggleSpeedUp(); }
 	else if (camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) { camera->setSpeed(camera->getSpeed() / 5); camera->toggleSpeedUp(); }
 
+	// Change camera mode - C
+	if (glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS)
+		window.setInputMode(GLFW_CURSOR, window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+
 	// Polygon Mode - Space
 	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS) {
 		polygonMode = !polygonMode;
@@ -102,7 +101,7 @@ void App::keyboardInput(GLFWwindow* win)
 	
 	// Terrain depth (+/-) =/-
 	if (glfwGetKey(win, GLFW_KEY_EQUAL) == GLFW_PRESS) terrain.setDepth(terrain.getDepth() + 0.001);
-	else if (glfwGetKey(win, GLFW_KEY_MINUS) == GLFW_PRESS)	if (terrain.getDepth() > 0) terrain.setDepth(terrain.getDepth() - 0.001);
+	else if (glfwGetKey(win, GLFW_KEY_MINUS) == GLFW_PRESS)	/*if (terrain.getDepth() > 0)*/ terrain.setDepth(terrain.getDepth() - 0.001);
 
 	// Tesselation level(+/-) T/Y
 	if (glfwGetKey(win, GLFW_KEY_T) == GLFW_PRESS)
