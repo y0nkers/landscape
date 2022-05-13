@@ -1,12 +1,14 @@
 ﻿#ifndef CONFIG_HPP
 #define CONFIG_HPP 1
 #define DEBUG_ENGINE 0 // Engine errors
+#define GLM_FORCE_SWIZZLE
 
 #include "Singleton.hpp"
 #include "json.hpp"
 #include <fstream>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/string_cast.hpp>
 
 using json = nlohmann::json; // json reader
 
@@ -19,17 +21,17 @@ namespace EngineSpace
 		std::string title = "Terrain Generator";
 		unsigned majorVersion = 4;
 		unsigned minorVersion = 1;
-		unsigned windowWidth = 1920;
-		unsigned windowHeight = 1080;
-		unsigned samples = 8; // Количество сэмплов для сглаживания
-		float cameraPitch = 0;
-		float cameraYaw = -90;
-		float cameraSpeed = 7;
+		unsigned windowWidth = 1280;
+		unsigned windowHeight = 1024;
+		unsigned samples = 8; // Количество сэмплов для MSAA сглаживания
+		float cameraPitch = -30;
+		float cameraYaw = -180;
+		float cameraSpeed = 0.5;
 		float cameraSensitivity = 0.1;
 		float cameraFov = 45;
 		float cameraFar = 1000;
-		float cameraNear = 0.05;
-		float anisotropy = 8;
+		float cameraNear = 0.01;
+		float anisotropy = 8; // степень анизотропной фильтрации
 		glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
 

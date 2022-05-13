@@ -13,6 +13,8 @@ namespace EngineSpace
         Texture textureHeight;
         Texture textureNormal;
         float depth = 0.05;
+        bool isClicked = false;
+        glm::vec3 clickPoint = glm::vec3(0.0f);
         unsigned tesselationLevel = 8;
         unsigned VAO = 0;
         unsigned* amount;
@@ -36,6 +38,9 @@ namespace EngineSpace
 
         void setDepth(const float& d) { depth = d; }
         float getDepth() const { return depth; }
+
+        void toggleClick() { isClicked = !isClicked; }
+        void setClickPoint(glm::vec3 point) { clickPoint = point; }
 
         void setTessLevel(const unsigned& level) { tesselationLevel = level; }
         unsigned getTessLevel() const { return tesselationLevel; }

@@ -48,6 +48,8 @@ namespace EngineSpace
 
         Transformationable::render(program);
         program.setFloat("depth", depth);
+        program.setBool("isClicked", isClicked);
+        program.setVec3("clickPoint", clickPoint);
         program.setInt("tesselationLevel", tesselationLevel);
 
         Texture::active(0);
