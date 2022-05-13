@@ -1,4 +1,4 @@
-﻿#include <cstdlib>
+#include <cstdlib>
 #include <ctime>
 #include "app.hpp"
 
@@ -13,6 +13,7 @@ void resizeEvent(GLFWwindow* win, int w, int h) { editor->resize(w, h); }
 void mouseMoveEvent(GLFWwindow* win, double posX, double posY) { editor->mouseMove(posX, posY); }
 void mouseButtonEvent(GLFWwindow* win, int button, int action, int mods) { editor->mouseButton(win, button, action, mods); }
 void processInput(GLFWwindow* win) { editor->keyboardInput(win); }
+void onScroll(GLFWwindow* win, double x, double y) { editor->scroll(x, y); }
 
 int main()
 {
@@ -28,8 +29,10 @@ int main()
 		window->setEventResize(resizeEvent);
 		window->setEventInput(processInput);
 		window->setEventMouseMove(mouseMoveEvent);
-		window->setEventMouseButton(mouseButtonEvent);
-		window->setInputMode(GLFW_CURSOR, /*isFullScreen? GLFW_CURSOR_NORMAL : GLFW_CURSOR_HIDDEN*/ GLFW_CURSOR_NORMAL);
+    window->setEventMouseButton(mouseButtonEvent);
+		window->setEventScroll(onScroll);
+		window->setInputMode(GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		
 		window->open();
 		delete editor;
 		delete window;

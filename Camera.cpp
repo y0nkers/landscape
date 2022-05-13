@@ -7,6 +7,13 @@ namespace EngineSpace
 	void Camera::moveRight() { position += right * (speed * Engine::get().getDeltaTime()); }
 	void Camera::moveLeft() { position -= right * (speed * Engine::get().getDeltaTime()); }
 
+	void Camera::changeFOV(const double& value) {
+		fov -= (float)value;
+		if (fov < 30.0f) fov = 30.0f;
+		else if (fov > 90.0f) fov = 90.0f;
+		updateVectors();
+	}
+
 	void Camera::updateVectors()
 	{
 		glm::vec3 front;

@@ -1,4 +1,4 @@
-﻿#ifndef TERRAIN_APP_HPP
+#ifndef TERRAIN_APP_HPP
 #define TERRAIN_APP_HPP 1
 
 #include "include.hpp"
@@ -40,6 +40,7 @@ public:
 	void render();
 	void resize(const unsigned& width, const unsigned& height);
 	void mouseMove(const double& posX, const double& posY);
+	void scroll(const double& x, const double& y);
 	void mouseButton(GLFWwindow* win, int button, int action, int mods);
 	void keyboardInput(GLFWwindow* win);
 };

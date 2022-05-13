@@ -43,6 +43,7 @@ namespace EngineSpace
 		void setEventMouseButton(void (*func)(GLFWwindow*, int, int, int)) { glfwSetMouseButtonCallback(window, func); }
 		void setEventScroll(void (*func)(GLFWwindow*, double, double)) { glfwSetScrollCallback(window, func); }
 
+		int getInputMode(const int& type) { return glfwGetInputMode(window, type); }
 		unsigned getWidth() const { return width; }
 		unsigned getHeight() const { return height; }
 		std::string getTitle() const { return title; }
