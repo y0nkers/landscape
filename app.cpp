@@ -101,11 +101,11 @@ glm::vec3 App::calculateRay(double mouse_x, double mouse_y)
 	// 3d normalised device coordinates. range [-1:1, -1:1, -1:1]
 	float x = (2.0f * mouse_x) / window.getWidth() - 1.0f;
 	float y = 1.0f - (2.0f * mouse_y) / window.getHeight();
-	float z = 1.0f;
+	float z = -1.0f;
 	glm::vec3 ray_nds = glm::vec3(x, y, z);
 
 	// 4d Homogeneous Clip Coordinates. range [-1:1, -1:1, -1:1, -1:1]
-	glm::vec4 ray_clip = glm::vec4(ray_nds.xy, -1.0, 1.0); // z point forward
+	glm::vec4 ray_clip = glm::vec4(ray_nds.xyz, 1.0); // z point forward
 
 	// 4d Eye (Camera) Coordinates. range [-x:x, -y:y, -z:z, -w:w]
 	glm::vec4 ray_eye = glm::inverse(camera->getProjectionMatrix()) * ray_clip;
@@ -115,8 +115,9 @@ glm::vec3 App::calculateRay(double mouse_x, double mouse_y)
 	glm::vec3 ray_world = (glm::inverse(camera->getViewMatrix()) * ray_eye).xyz;
 	// don't forget to normalise the vector at some point
 	ray_world = glm::normalize(ray_world);
-	std::cout << glm::to_string(ray_world) << std::endl;
-	//std::cout << ray_world.x << std::endl << ray_world.y << std::endl << ray_world.z << std::endl;
+
+	//std::cout << glm::to_string(ray_world) << std::endl;
+	//std::cout << "cam " << glm::to_string(camera->getDirection()) << std::endl;
 	return ray_world;
 }
 
