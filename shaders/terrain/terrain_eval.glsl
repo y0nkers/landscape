@@ -2,7 +2,7 @@
 // tesselation evaluation shader
 #version 410
 
-layout (quads, fractional_even_spacing, ccw) in; // тип тесселяции, способ разбиения отрезков и способ упорядочивания вершин
+layout (quads, fractional_even_spacing, ccw) in; // С‚РёРї С‚РµСЃСЃРµР»В¤С†РёРё, СЃРїРѕСЃРѕР± СЂР°Р·Р±РёРµРЅРёВ¤ РѕС‚СЂРµР·РєРѕРІ Рё СЃРїРѕСЃРѕР± СѓРїРѕСЂВ¤РґРѕС‡РёРІР°РЅРёВ¤ РІРµСЂС€РёРЅ
 
 in vec2 tc_out[];
 out vec2 texCoords;
@@ -14,8 +14,8 @@ uniform mat4 viewProject;
 uniform mat4 model;
 uniform vec4 clipPlane;
 
-// gl_in как в tess control
-// gl_TessCoord (u,v,w) - трехмерный вектор с координатами, идентифицирующими положение вершины в патче;
+// gl_in РєР°Рє РІ tess control
+// gl_TessCoord (u,v,w) - С‚СЂРµС…РјРµСЂРЅС‹Р№ РІРµРєС‚РѕСЂ СЃ РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё, РёРґРµРЅС‚РёС„РёС†РёСЂСѓСЋС‰РёРјРё РїРѕР»РѕР¶РµРЅРёРµ РІРµСЂС€РёРЅС‹ РІ РїР°С‚С‡Рµ;
 
 void main()
 {

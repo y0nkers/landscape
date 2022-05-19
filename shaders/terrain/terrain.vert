@@ -2,8 +2,8 @@
 
 out vec2 tc;
 
-// gl_InstanceID - id текущего примитива
-// gl_VertexID - id текущей вершины
+// gl_InstanceID - id С‚РµРєСѓС‰РµРіРѕ РїСЂРёРјРёС‚РёРІР°
+// gl_VertexID - id С‚РµРєСѓС‰РµР№ РІРµСЂС€РёРЅС‹
 
 void main()
 {
