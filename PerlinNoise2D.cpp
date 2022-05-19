@@ -31,6 +31,8 @@ namespace EngineSpace
 		double xFactor = 1.0 / (width - 1);
 		double yFactor = 1.0 / (height - 1);
 
+		double dx = -(int)width / 2.0f;
+		double dy = -(int)height / 2.0f;
 		for (size_t w = 0; w < width; ++w)
 		{
 			for (size_t h = 0; h < height; ++h)
@@ -40,10 +42,10 @@ namespace EngineSpace
 				double perlin = octavePerlin(x, y);
 				GLubyte result = (GLubyte)(perlin * 255);
 				size_t index = (w * width + h) * 4;
-				data[index] = result;
+				data[index] = dx + w; //result;
 				data[index + 1] = result;
-				data[index + 2] = result;
-				data[index + 3] = result;
+				data[index + 2] = dy + h; //result;
+				data[index + 3] = 255; //result;
 			}
 		}
 	}

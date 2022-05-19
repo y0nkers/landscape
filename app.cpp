@@ -22,6 +22,8 @@ App::App(Window& win) :
 	scene->addLight(pointLight);
 
 	generateFlat();
+
+	picker = new MousePicker(&generator, &converter, &terrain);
 }
 
 void App::initShadersManager()
@@ -67,33 +69,60 @@ void App::mouseMove(const double& posX, const double& posY)
 	if (window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_DISABLED) camera->rotate(posX - lastPosX, lastPosY - posY);
 	lastPosX = posX;
 	lastPosY = posY;
-	// std::cout << "Mouse position: x = " << lastPosX << ", y = " << lastPosY << std::endl;
 }
 
-void App::scroll(const double& x, const double& y) {
-	camera->changeFOV(y);
-}
+void App::scroll(const double& x, const double& y) { camera->changeFOV(y); }
 
 void App::mouseButton(GLFWwindow* win, int button, int action, int mods)
 {
-	//if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_REPEAT)
-	if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+	if (action == GLFW_PRESS)
 	{
+		if (button == GLFW_MOUSE_BUTTON_RIGHT) std::cout << "Right Mouse Button pressed." << std::endl;
+		else if (button == GLFW_MOUSE_BUTTON_LEFT) std::cout << "Left Mouse Button pressed." << std::endl;
+		else return;
+
 		double xpos = 0, ypos = 0;
 		glfwGetCursorPos(win, &xpos, &ypos);
-		//static double x = xpos, y = ypos;
-		std::cout << "Mouse button pressed." << std::endl;
-
-		std::cout << "Cursor Position at (" << xpos << ";" << ypos << ")" << std::endl;
-		terrain.toggleClick();
-		terrain.setClickPoint(calculateRay(xpos, ypos));
+		std::cout << "Mouse position at [" << xpos << ";" << ypos << "]" << std::endl;
+		if (window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_NORMAL) doShit(xpos, ypos, button); // only in Picking mode
+		else std::cout << "Change camera mode to picking!" << std::endl;
 	}
-	else if (glfwGetMouseButton(win, GLFW_MOUSE_BUTTON_LEFT) == GLFW_RELEASE)
+	else if (action == GLFW_RELEASE)
 	{
-		terrain.toggleClick();
-		terrain.setClickPoint(glm::vec3(0.0f));
-		std::cout << "Mouse button released." << std::endl;
+		if (button == GLFW_MOUSE_BUTTON_RIGHT) std::cout << "Right Mouse Button released." << std::endl;
+		else if (button == GLFW_MOUSE_BUTTON_LEFT) std::cout << "Left Mouse Button released." << std::endl;
+		else return;
 	}
+
+	//if (button == GLFW_MOUSE_BUTTON_RIGHT)
+	//{
+	//	if (action == GLFW_PRESS) 
+	//		std::cout << "Pressed right button." << std::endl;
+	//	else if (action == GLFW_RELEASE)
+	//		std::cout << "Right button released." << std::endl;
+	//}	
+
+	//else if (button == GLFW_MOUSE_BUTTON_LEFT)
+	//{
+	//	if (action == GLFW_PRESS)
+	//	{
+	//		double xpos = 0, ypos = 0;
+	//		glfwGetCursorPos(win, &xpos, &ypos);
+	//		std::cout << "Mouse button pressed." << std::endl;
+	//		std::cout << "Mouse position at [" << xpos << ";" << ypos << "]" << std::endl;
+	//		if (window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_NORMAL) doShit(xpos, ypos); // only in Picking mode
+	//		else std::cout << "Change camera mode to picking!" << std::endl;
+	//	}
+	//	else if (action == GLFW_RELEASE)
+	//		std::cout << "Mouse button released." << std::endl;
+	//}
+}
+
+void App::doShit(double x, double y, int button)
+{
+	glm::vec3 ray = picker->calculateRay(x, y, window, camera);
+	float distance;
+	picker->doGlobalShit(camera->getPosition(), ray, TERRAIN_SIZE, TERRAIN_SIZE, distance, button);
 }
 
 glm::vec3 App::calculateRay(double mouse_x, double mouse_y)
@@ -116,7 +145,7 @@ glm::vec3 App::calculateRay(double mouse_x, double mouse_y)
 	// don't forget to normalise the vector at some point
 	ray_world = glm::normalize(ray_world);
 
-	//std::cout << glm::to_string(ray_world) << std::endl;
+	std::cout << glm::to_string(ray_world) << std::endl;
 	//std::cout << "cam " << glm::to_string(camera->getDirection()) << std::endl;
 	return ray_world;
 }
@@ -135,28 +164,22 @@ void App::keyboardInput(GLFWwindow* win)
 	else if (camera->isSpeedUp() && glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_RELEASE) { camera->setSpeed(camera->getSpeed() / 4); camera->toggleSpeedUp(); }
 
 	// Change camera mode - C
-	if (glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS)
-		window.setInputMode(GLFW_CURSOR, window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+	if (glfwGetKey(win, GLFW_KEY_C) == GLFW_PRESS) window.setInputMode(GLFW_CURSOR, window.getInputMode(GLFW_CURSOR) == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 
 	// Polygon Mode - Space
-	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS) {
+	if (glfwGetKey(win, GLFW_KEY_SPACE) == GLFW_PRESS && EngineSpace::Engine::get().getFrames() == 0)
+	{
 		polygonMode = !polygonMode;
 		glPolygonMode(GL_FRONT_AND_BACK, polygonMode ? GL_LINE : GL_FILL);
 	}
 	
 	// Terrain depth (+/-) =/-
 	if (glfwGetKey(win, GLFW_KEY_EQUAL) == GLFW_PRESS) terrain.setDepth(terrain.getDepth() + 0.001);
-	else if (glfwGetKey(win, GLFW_KEY_MINUS) == GLFW_PRESS)	/*if (terrain.getDepth() > 0)*/ terrain.setDepth(terrain.getDepth() - 0.001);
+	else if (glfwGetKey(win, GLFW_KEY_MINUS) == GLFW_PRESS /*&& (terrain.getDepth() > 0)*/) terrain.setDepth(terrain.getDepth() - 0.001);
 
 	// Tesselation level(+/-) T/Y
-	if (glfwGetKey(win, GLFW_KEY_T) == GLFW_PRESS)
-	{
-		if (terrain.getTessLevel() < 64) terrain.setTessLevel(terrain.getTessLevel() + 1);
-	}
-	else if (glfwGetKey(win, GLFW_KEY_Y) == GLFW_PRESS)
-	{
-		if (terrain.getTessLevel() > 1) terrain.setTessLevel(terrain.getTessLevel() - 1);
-	}
+	if (glfwGetKey(win, GLFW_KEY_T) == GLFW_PRESS && terrain.getTessLevel() < Config::get().getMaxTessLevel()) terrain.setTessLevel(terrain.getTessLevel() + 1);
+	else if (glfwGetKey(win, GLFW_KEY_Y) == GLFW_PRESS && terrain.getTessLevel() > 1) terrain.setTessLevel(terrain.getTessLevel() - 1);
 
 	// Generate different terrains
 	if (glfwGetKey(win, GLFW_KEY_1) == GLFW_PRESS)		generatePerlinPlain();
@@ -176,7 +199,7 @@ void App::generateFlat()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinPlain() 
@@ -189,7 +212,7 @@ void App::generatePerlinPlain()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENT, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinLowLands()
@@ -202,7 +225,7 @@ void App::generatePerlinLowLands()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinHighLands()
@@ -215,7 +238,7 @@ void App::generatePerlinHighLands()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinLittleMountains()
@@ -228,7 +251,7 @@ void App::generatePerlinLittleMountains()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinMountains() 
@@ -241,5 +264,5 @@ void App::generatePerlinMountains()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	conventer.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }

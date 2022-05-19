@@ -14,9 +14,6 @@ uniform mat4 viewProject;
 uniform mat4 model;
 uniform vec4 clipPlane;
 
-//uniform bool isClicked;
-//uniform vec3 clickPoint;
-
 // gl_in как в tess control
 // gl_TessCoord (u,v,w) - трехмерный вектор с координатами, идентифицирующими положение вершины в патче;
 
@@ -25,18 +22,9 @@ void main()
 	vec2 tc = vec2(tc_out[0].x + (gl_TessCoord.x) / 64.0, tc_out[0].y + (1.0 - gl_TessCoord.y) / 64.0);
 
 	vec4 tessellatedPoint = vec4(gl_in[0].gl_Position.x + gl_TessCoord.x / 64.0, 0.0, gl_in[0].gl_Position.z + gl_TessCoord.y / 64.0, 1.0);
-//	if (isClicked) 
-//	{
-//		if (distance(tessellatedPoint.xyz, clickPoint) < 1.0) tessellatedPoint.y += 0.01;
-//	}
-	tessellatedPoint.y += texture(heightMap, tc).r * depth;
+	tessellatedPoint.y += texture(heightMap, tc).y * depth; // maybe texture().g ? 
 
-	vec4 pos = viewProject * model * tessellatedPoint;
-//	if (isClicked) 
-//	{
-//		if (distance(pos.xyz, clickPoint) < 1.0) pos.y += depth;
-//	}
-	gl_Position = pos;
+	gl_Position = viewProject * model * tessellatedPoint;
 	fragPos = vec3(model * tessellatedPoint);
 
 	vec4 vertexPos = vec4(fragPos, 1.0);

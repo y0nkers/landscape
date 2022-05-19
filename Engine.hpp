@@ -41,6 +41,7 @@ namespace EngineSpace
 
 		float getDeltaTime() const { return deltaTime; }
 		std::string getFPS() const { return actualFPS; }
+		unsigned getFrames() const { return frames; }
 	};
 }
 #endif

@@ -14,10 +14,11 @@ class App
 	ShadersManager manager;
 	Camera* camera;
 	TextureGenerator2D generator;
-	ConverterToNormalMap conventer;
+	ConverterToNormalMap converter;
 	Scene* scene;
 	Skybox skybox;
 	Terrain terrain;
+	MousePicker* picker;
 	Light pointLight;
 	bool firstTime = true;
 	bool polygonMode = false;
@@ -32,6 +33,7 @@ class App
 	void generatePerlinLittleMountains();
 	void generatePerlinMountains();
 	glm::vec3 calculateRay(double mouse_x, double mouse_y);
+	void doShit(double x, double y, int button);
 
 public:
 	App(Window& win);

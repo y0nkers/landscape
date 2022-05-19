@@ -20,3 +20,4 @@
 #include "TextureGenerator2D.hpp"
 #include "PerlinNoise2D.hpp"
 #include "ConverterToNormalMap.hpp"
+#include "MousePicker.hpp"

@@ -55,9 +55,9 @@ vec3 calcPointLight(PointLight light, vec3 material, vec3 viewDir, vec3 normal)
     //return (ambient + diffuse + specular) * attenuation;
 }
 
-vec3 blendColor(vec3 rgbA, vec3 rgbB, vec3 rgbC, float alpha) // Смешивание цветов
+vec3 blendColor(vec3 first, vec3 second, vec3 third, float alpha) // Смешивание цветов
 {
-	return (rgbA * alpha) + (rgbB * alpha) + (rgbC * alpha);
+	return (first * alpha) + (second * alpha) + (third * alpha);
 }
 
 vec3 calcFog(vec3 material) // Туман
@@ -77,7 +77,7 @@ void main()
     vec3 normal = vec3(normalColor.r * 2.0 - 1.0, normalColor.b, normalColor.g * 2.0 - 1.0);
     normal = normalize(normal);
 
-    vec3 height = texture(heightMap, texCoords).rgb;
+    vec3 height = texture(heightMap, texCoords).rgb; // HEIGHT MAP DETECTED!!!
 
     vec3 grass1 = texture(grassTex, texCoords * 10 + 5).rgb;
     vec3 grass2 = texture(grassTex, texCoords * 15 + 20).rgb;
@@ -93,10 +93,7 @@ void main()
     material = mix(grass, material, min(fragPos.y / 0.7, 1)); // mix(x, y, a) - Линейная интерполяция между x и y с помощью a. return x * (1 - a) + y * a
 
     vec3 result = vec3(0.0, 0.0, 0.0);
-    for (int i = 0; i < lightsAmount; ++i)
-    {
-      result += calcPointLight(lights[i], material, viewDir, normal);
-    }
+    for (int i = 0; i < lightsAmount; ++i) result += calcPointLight(lights[i], material, viewDir, normal);
 
     float brightness = dot(result, BRIGHT_FACTOR);
     if (brightness > 1.0) brightColor = vec4(result, 1.0);

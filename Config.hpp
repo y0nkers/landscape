@@ -1,6 +1,6 @@
 ﻿#ifndef CONFIG_HPP
 #define CONFIG_HPP 1
-#define DEBUG_ENGINE 0 // Engine errors
+#define DEBUG_ENGINE 1 // Engine errors
 #define GLM_FORCE_SWIZZLE
 
 #include "Singleton.hpp"
@@ -24,8 +24,9 @@ namespace EngineSpace
 		unsigned windowWidth = 1280;
 		unsigned windowHeight = 1024;
 		unsigned samples = 8; // Количество сэмплов для MSAA сглаживания
-		float cameraPitch = -30;
-		float cameraYaw = -180;
+		unsigned maxTessLevel = 16;
+		float cameraPitch = 0;
+		float cameraYaw = -90;
 		float cameraSpeed = 0.5;
 		float cameraSensitivity = 0.1;
 		float cameraFov = 45;
@@ -44,6 +45,7 @@ namespace EngineSpace
 			windowWidth = json["windowWidth"];
 			windowHeight = json["windowHeight"];
 			samples = json["samples"];
+			maxTessLevel = json["maxTessLevel"];
 			cameraPitch = json["cameraPitch"];
 			cameraYaw = json["cameraYaw"];
 			cameraSpeed = json["cameraSpeed"];
@@ -61,6 +63,7 @@ namespace EngineSpace
 		unsigned getMajorVersion() const { return majorVersion; }
 		unsigned getMinorVersion() const { return minorVersion; }
 		unsigned getSamples() const { return samples; }
+		unsigned getMaxTessLevel() const { return maxTessLevel; }
 		float getCameraPitch() const { return cameraPitch; }
 		float getCameraYaw() const { return cameraYaw; }
 		float getCameraSpeed() const { return cameraSpeed; }

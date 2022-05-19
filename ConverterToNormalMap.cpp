@@ -43,7 +43,7 @@ namespace EngineSpace
         return glm::normalize(normal);
     }
 
-    void ConverterToNormalMap::prepareData(GLubyte* inputData, const std::vector<GLubyte>& data, const unsigned& width, const unsigned& height)
+    void ConverterToNormalMap::prepareData(std::vector<GLubyte>& inputData, const std::vector<GLubyte>& data, const unsigned& width, const unsigned& height)
     {
         for (unsigned w = 0; w < width; ++w)
         {
@@ -60,22 +60,32 @@ namespace EngineSpace
         }
     }
 
-    void ConverterToNormalMap::convert(const std::vector<GLubyte>& data, Texture& textureDestination, const unsigned& width, const unsigned& height)
+    void ConverterToNormalMap::convert(const std::vector<GLubyte>& data, Texture& texture, const unsigned& width, const unsigned& height)
     {
-        if (textureDestination.isNotCreated())
+        const unsigned size = width * height * 4;
+        normalMap.clear();
+        normalMap.resize(size);
+        prepareData(normalMap, data, width, height);
+
+        bindTexture(texture, width, height, size);
+    }
+
+    void ConverterToNormalMap::bindTexture(Texture& texture, const unsigned& width, const unsigned& height, const unsigned& size)
+    {
+        if (texture.isNotCreated())
         {
-            textureDestination.create();
-            textureDestination.bind(GL_TEXTURE_2D);
+            texture.create();
+            texture.bind(GL_TEXTURE_2D);
             glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, width, height);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, Config::get().getAnisotropy());
         }
 
-        GLubyte* inputData = new GLubyte[width * height * 4]; // texture
+        GLubyte* inputData = new GLubyte[size]; // texture
+        for (unsigned i = 0; i < size; ++i) inputData[i] = normalMap[i];
 
-        prepareData(inputData, data, width, height);
-        textureDestination.bind(GL_TEXTURE_2D);
+        texture.bind(GL_TEXTURE_2D);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, inputData);
         Texture::unbind(GL_TEXTURE_2D);
         delete[] inputData;

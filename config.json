@@ -2,6 +2,7 @@
     "windowWidth": 1280,
     "windowHeight": 1024,
     "samples": 8,
+	"maxTessLevel": 16,
     "cameraPitch": 0,
     "cameraYaw": -90,
     "cameraSpeed": 0.5,
