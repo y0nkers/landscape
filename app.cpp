@@ -199,7 +199,7 @@ void App::generateFlat()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinPlain() 
@@ -212,7 +212,7 @@ void App::generatePerlinPlain()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENT, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinLowLands()
@@ -225,7 +225,7 @@ void App::generatePerlinLowLands()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinHighLands()
@@ -238,7 +238,7 @@ void App::generatePerlinHighLands()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinLittleMountains()
@@ -251,7 +251,7 @@ void App::generatePerlinLittleMountains()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }
 
 void App::generatePerlinMountains() 
@@ -264,5 +264,5 @@ void App::generatePerlinMountains()
 	++offset;
 
 	generator.generate(terrain.getHeightMap(), PerlinNoise2D(FREQUENCY, AMPLITUDE, PERSISTENCE, OCTAVES, PERLIN_MULTI, offset, offset), TERRAIN_SIZE, TERRAIN_SIZE);
-	converter.convert(generator.getTextureData(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
+	converter.convert(generator.getHeightMap(), terrain.getNormalMap(), TERRAIN_SIZE, TERRAIN_SIZE);
 }

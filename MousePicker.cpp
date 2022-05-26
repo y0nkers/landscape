@@ -26,8 +26,8 @@ namespace EngineSpace
 		// don't forget to normalise the vector at some point
 		ray_world = glm::normalize(ray_world);
 
-		std::cout << glm::to_string(ray_world) << std::endl;
-		//std::cout << "cam " << glm::to_string(camera->getDirection()) << std::endl;
+		std::cout << "RAY WORLD: " << glm::to_string(ray_world) << std::endl;
+		//std::cout << "CAMERA DIRECTION" << glm::to_string(camera->getDirection()) << std::endl;
 		return ray_world;
 	}
 
@@ -70,29 +70,62 @@ namespace EngineSpace
 	bool MousePicker::IntersectTriangle(const glm::vec3& ray_origin, const glm::vec3& ray_direction, const glm::vec3& point1, const glm::vec3& point2, const glm::vec3& point3)
 	{
 		glm::vec3 X = IntersectPlane(ray_origin, ray_direction, point1, point2, point3);
+		//std::cout << "INTERSECTION POINT: " << glm::to_string(X) << std::endl;
 		return PointInTriangle(X, point1, point2, point3);
 	}
 
 	void MousePicker::doGlobalShit(const glm::vec3& camera_position, const glm::vec3& ray_direction, const unsigned& width, const unsigned& height, float& distance, const int& mode)
 	{
-		std::vector<GLubyte> points = generator->getTextureData();
-		std::vector<GLubyte> normals = converter->getNormalMap();
+		std::vector<double> points = generator->getPoints();
 
-		unsigned size = width * height * 4;
-		for (unsigned index = 4; index < size - 8; index += 4)
+		glm::vec3 point1 = glm::vec3(-0.5, 0.0, 0.5);
+		glm::vec3 point2 = glm::vec3(-0.5, 0.0, -0.5);
+		glm::vec3 point3 = glm::vec3(0.5, 0.0, 0.5);
+		glm::vec3 point4 = glm::vec3(0.5, 0.0, -0.5);
+		bool intersection = IntersectTriangle(camera_position, ray_direction, point1, point2, point3);
+		bool intersection2 = IntersectTriangle(camera_position, ray_direction, point2, point3, point4);
+		if (intersection) std::cout << "good" << std::endl;
+		if (intersection2) std::cout << "good2" << std::endl;
+
+		for (size_t h = 0; h < height - 1; ++h)
 		{
-			glm::vec3 point1 = glm::vec3(points[index - 4], points[index - 3], points[index - 2]);
-			glm::vec3 point2 = glm::vec3(points[index], points[index + 1], points[index + 2]);
-			glm::vec3 point3 = glm::vec3(points[index + 4], points[index + 5], points[index + 6]);
-
-			bool intersection = IntersectTriangle(camera_position, ray_direction, point1, point2, point3);
-			if (intersection)
+			for (size_t w = 0; w < width - 1; ++w)
 			{
-				int height = 10 + (rand() % static_cast<int>(20 - 10 + 1));
-				if (mode == GLFW_MOUSE_BUTTON_RIGHT) height = -height;
-				generator->changePointHeight(index, 100);
+				unsigned idx1 = h * (w + 1) * 3;
+				unsigned idx2 = (h + 1) * w * 3;
+				glm::vec3 point1 = glm::vec3(points[idx1], points[idx1 + 1], points[idx1 + 2]);
+				glm::vec3 point2 = glm::vec3(points[idx2], points[idx2 + 1], points[idx2 + 2]);
+				unsigned idx3 = 0;
+				if (w % 2) idx3 = (h + 1) * (w + 1) * 3; // 1, 3, 5...
+				else idx3 = h * w * 3; // 0, 2, 4...
+				glm::vec3 point3 = glm::vec3(points[idx3], points[idx3 + 1], points[idx3 + 2]);
+				bool intersection = IntersectTriangle(camera_position, ray_direction, point1, point2, point3);
+				if (intersection)
+				{
+					int height = 10 + (rand() % static_cast<int>(20 - 10 + 1));
+					if (mode == GLFW_MOUSE_BUTTON_RIGHT) height = -height;
+					generator->changePointHeight(idx1/3*4, height);
+					generator->changePointHeight(idx2/3*4, height);
+					generator->changePointHeight(idx3/3*4, height);
+				}
 			}
 		}
+
+		//unsigned size = width * height * 4;
+		//for (unsigned index = 4; index < size - 8; index += 4)
+		//{
+		//	glm::vec3 point1 = glm::vec3(points[index - 4], points[index - 3], points[index - 2]);
+		//	glm::vec3 point2 = glm::vec3(points[index], points[index + 1], points[index + 2]);
+		//	glm::vec3 point3 = glm::vec3(points[index + 4], points[index + 5], points[index + 6]);
+
+		//	bool intersection = IntersectTriangle(camera_position, ray_direction, point1, point2, point3);
+		//	if (intersection)
+		//	{
+		//		int height = 10 + (rand() % static_cast<int>(20 - 10 + 1));
+		//		if (mode == GLFW_MOUSE_BUTTON_RIGHT) height = -height;
+		//		generator->changePointHeight(index, 100);
+		//	}
+		//}
 
 		//for (unsigned w = 0; w < width; ++w)
 		//{
@@ -111,6 +144,6 @@ namespace EngineSpace
 		//	}
 		//}
 		generator->bindTexture(terrain->getHeightMap(), width, height, width * height * 4);
-		converter->convert(generator->getTextureData(), terrain->getNormalMap(), width, height);
+		converter->convert(generator->getHeightMap(), terrain->getNormalMap(), width, height);
 	}
 }

@@ -13,7 +13,7 @@ namespace EngineSpace
         Texture textureHeight;
         Texture textureNormal;
         float depth = 0.05;
-        unsigned tesselationLevel = 4;
+        unsigned tesselationLevel = 1;
         unsigned VAO = 0;
         unsigned* amount;
 

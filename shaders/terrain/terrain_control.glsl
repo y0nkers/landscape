@@ -24,7 +24,7 @@ uniform mat4 model;
 
 float calcTessLevel()
 {
-	const int minTess = 4;
+	const int minTess = 1;
 	const float minDepth = 0.001;
 	const float maxDepth = 30.0;
 

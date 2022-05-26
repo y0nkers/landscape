@@ -7,16 +7,17 @@ namespace EngineSpace
 		;
 	}
 
-	double PerlinNoise2D::octavePerlin(const double& x, const double& y) const // Расчёт значения шумовой функции
+	double PerlinNoise2D::octavePerlin(const double& x, const double& z) const // Расчёт значения шумовой функции
 	{
 		double total = 0;
 		double freq = frequency;
 		double amp = amplitude;
 		double maxValue = 0;
+		if (amp == 0) return 0;
 
 		for (unsigned i = 0; i < octaves; ++i)
 		{
-			glm::vec2 p((x * freq + offsetX) * multiplier, (y * freq + offsetY) * multiplier);
+			glm::vec2 p((x * freq + offsetX) * multiplier, (z * freq + offsetY) * multiplier);
 
 			total += ((glm::perlin(p) + 1.0) / 2.0) * amp;
 			maxValue += amp;
@@ -26,26 +27,31 @@ namespace EngineSpace
 		return total / maxValue;
 	}
 
-	void PerlinNoise2D::fillData(std::vector<GLubyte>& data, const unsigned& width, const unsigned& height, const unsigned& depth) const
+	void PerlinNoise2D::fillData(std::vector<GLubyte>& map, std::vector<double>& points, const unsigned& width, const unsigned& height, const unsigned& depth) const
 	{
 		double xFactor = 1.0 / (width - 1);
-		double yFactor = 1.0 / (height - 1);
+		double zFactor = 1.0 / (height - 1);
 
-		double dx = -(int)width / 2.0f;
-		double dy = -(int)height / 2.0f;
-		for (size_t w = 0; w < width; ++w)
+		for (size_t h = 0; h < height; ++h)
 		{
-			for (size_t h = 0; h < height; ++h)
+			double dz = zFactor * h;
+			for (size_t w = 0; w < width; ++w)
 			{
-				double x = xFactor * w;
-				double y = yFactor * h;
-				double perlin = octavePerlin(x, y);
-				GLubyte result = (GLubyte)(perlin * 255);
-				size_t index = (w * width + h) * 4;
-				data[index] = dx + w; //result;
-				data[index + 1] = result;
-				data[index + 2] = dy + h; //result;
-				data[index + 3] = 255; //result;
+				double dx = xFactor * w;
+				double x = dx - 0.5;
+				double y = octavePerlin(dx, dz);
+				double z = 0.5 - dz;
+
+				size_t pIdx = (w * width + h) * 3;
+				points[pIdx] = x;
+				points[pIdx + 1] = y;
+				points[pIdx + 2] = z;
+
+				size_t mIdx = (w * width + h) * 4;
+				map[mIdx] = (GLubyte)(255 * x);
+				map[mIdx + 1] = (GLubyte)(255 * y);
+				map[mIdx + 2] = (GLubyte)(255 * z);
+				map[mIdx + 3] = (GLubyte)255;
 			}
 		}
 	}

@@ -19,10 +19,10 @@ uniform vec4 clipPlane;
 
 void main()
 {
-	vec2 tc = vec2(tc_out[0].x + (gl_TessCoord.x) / 64.0, tc_out[0].y + (1.0 - gl_TessCoord.y) / 64.0);
+	vec2 tc = vec2(tc_out[0].x + (gl_TessCoord.x) / 512.0, tc_out[0].y + (1.0 - gl_TessCoord.y) / 512.0);
 
-	vec4 tessellatedPoint = vec4(gl_in[0].gl_Position.x + gl_TessCoord.x / 64.0, 0.0, gl_in[0].gl_Position.z + gl_TessCoord.y / 64.0, 1.0);
-	tessellatedPoint.y += texture(heightMap, tc).y * depth; // maybe texture().g ? 
+	vec4 tessellatedPoint = vec4(gl_in[0].gl_Position.x + gl_TessCoord.x / 512.0, 0.0, gl_in[0].gl_Position.z + gl_TessCoord.y / 512.0, 1.0);
+	tessellatedPoint.y += texture(heightMap, tc).y * depth;
 
 	gl_Position = viewProject * model * tessellatedPoint;
 	fragPos = vec3(model * tessellatedPoint);

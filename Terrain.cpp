@@ -68,7 +68,7 @@ namespace EngineSpace
 
         glBindVertexArray(VAO);
         glPatchParameteri(GL_PATCH_VERTICES, 4); // Устанавливаем количество вершин на патч
-        glDrawArraysInstanced(GL_PATCHES, 0, 4, 64 * 64); // отрисовываем сразу несколько экземпляров одного патча
+        glDrawArraysInstanced(GL_PATCHES, 0, 4, 512 * 512); // отрисовываем сразу несколько экземпляров одного патча
         glBindVertexArray(0);
         Texture::unbind(GL_TEXTURE_2D);
         glEnable(GL_CULL_FACE);

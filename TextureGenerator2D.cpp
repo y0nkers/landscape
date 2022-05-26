@@ -5,9 +5,11 @@ namespace EngineSpace
     void TextureGenerator2D::generate(Texture& texture, const TextureGenerateMethod& method, const unsigned& width, const unsigned& height, const unsigned& depth)
     {
         const unsigned size = width * height * 4;
-        data.clear();
-        data.resize(size);
-        method.fillData(data, width, height, depth);
+        map.clear();
+        map.resize(size);
+        points.clear();
+        points.resize(width * height * 3);
+        method.fillData(map, points, width, height, depth);
 
         bindTexture(texture, width, height, size);
     }
@@ -26,7 +28,7 @@ namespace EngineSpace
 
         GLubyte* inputData = new GLubyte[size];
         for (unsigned i = 0; i < size; ++i) 
-            inputData[i] = data[i];
+            inputData[i] = map[i];
 
         texture.bind(GL_TEXTURE_2D);
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, inputData);
@@ -36,11 +38,8 @@ namespace EngineSpace
 
     void TextureGenerator2D::changePointHeight(unsigned index, unsigned value)
     {
-        int val = data[index + 1] + value;
+        int val = (unsigned)map[index + 1] + value;//(value * 255);
         val = std::min(std::max(0, val), 255);
-        data[index + 1] = val;
-        //data[index] = val;
-        //data[index + 2] = val;
-        //data[index + 3] = val;
+        map[index + 1] = (GLubyte)val;
     }
 }

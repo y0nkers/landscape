@@ -55,7 +55,7 @@ namespace EngineSpace
                 inputData[index] = toRGB(normal.x);
                 inputData[index + 1] = toRGB(normal.y);
                 inputData[index + 2] = toRGB(normal.z);
-                inputData[index + 3] = (GLubyte)255; // alpha (non transparent)
+                inputData[index + 3] = (GLubyte)255;
             }
         }
     }
